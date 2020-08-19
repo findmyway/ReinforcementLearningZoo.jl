@@ -38,10 +38,11 @@ end
 (learner::BasicDQNLearner)(env) =
     env |>
     get_state |>
-    x ->
-        send_to_device(device(learner.approximator), x) |>
-        learner.approximator |>
-        send_to_host
+    x -> Flux.unsqueeze(x, ndims(x) + 1) |>
+    x -> send_to_device(device(learner.approximator), x) |>
+    learner.approximator |>
+    vec |>
+    send_to_host
 
 function BasicDQNLearner(;
     approximator::Q,
