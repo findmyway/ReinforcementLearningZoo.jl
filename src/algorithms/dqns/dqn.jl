@@ -63,9 +63,11 @@ end
     if `!isnothing(stack_size)`.
 """
 (learner::DQNLearner)(obs) =
-    obs |> get_state |>
+    obs |>
+    get_state |>
     x ->
-        send_to_device(device(learner.approximator), x) |> learner.approximator |>
+        send_to_device(device(learner.approximator), x) |>
+        learner.approximator |>
         send_to_host
 
 function RLBase.update!(learner::DQNLearner, batch)

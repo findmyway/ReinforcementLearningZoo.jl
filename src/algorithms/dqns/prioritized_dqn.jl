@@ -39,7 +39,7 @@ function PrioritizedDQNLearner(;
     update_freq::Int = 1,
     target_update_freq::Int = 100,
     update_step::Int = 0,
-    default_priority::Float32 = 100f0,
+    default_priority::Float32 = 100.0f0,
     seed = nothing,
 ) where {Tq,Tt,Tf}
     copyto!(approximator, target_approximator)
@@ -68,9 +68,11 @@ end
     if `!isnothing(stack_size)`.
 """
 (learner::PrioritizedDQNLearner)(obs) =
-    obs |> get_state |>
+    obs |>
+    get_state |>
     x ->
-        send_to_device(device(learner.approximator), x) |> learner.approximator |>
+        send_to_device(device(learner.approximator), x) |>
+        learner.approximator |>
         send_to_host
 
 function RLBase.update!(learner::PrioritizedDQNLearner, batch)
