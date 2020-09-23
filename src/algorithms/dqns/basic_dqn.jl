@@ -13,9 +13,11 @@ struct BasicDQNLearner{Q,F,R} <: AbstractLearner
 end
 
 (learner::BasicDQNLearner)(obs) =
-    obs |> get_state |>
+    obs |>
+    get_state |>
     x ->
-        send_to_device(device(learner.approximator), x) |> learner.approximator |>
+        send_to_device(device(learner.approximator), x) |>
+        learner.approximator |>
         send_to_host
 
 function BasicDQNLearner(;

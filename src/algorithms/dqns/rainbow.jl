@@ -136,7 +136,7 @@ function RLBase.update!(learner::RainbowLearner, batch)
         select_logits = logits[:, actions]
         batch_losses = loss_func(select_logits, target_distribution)
 
-        updated_priorities = vec(clamp.(sqrt.(batch_losses .+ 1f-10), 1.f0, 1.f2))
+        updated_priorities = vec(clamp.(sqrt.(batch_losses .+ 1f-10), 1.0f0, 1.f2))
         target_priorities = 1.0f0 ./ sqrt.(updated_priorities .+ 1f-10)
         normalized_target_priorities = target_priorities ./ maximum(target_priorities)
 
@@ -238,9 +238,7 @@ function RLBase.update!(p::QBasedPolicy{<:RainbowLearner}, t::AbstractTrajectory
     end
 end
 
-function (
-    agent::Agent{<:QBasedPolicy{<:RainbowLearner},<:CircularCompactPSARTSATrajectory}
-)(
+function (agent::Agent{<:QBasedPolicy{<:RainbowLearner},<:CircularCompactPSARTSATrajectory})(
     ::PostActStage,
     obs,
 )
