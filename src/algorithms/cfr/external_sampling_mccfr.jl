@@ -85,9 +85,8 @@ function external_sampling(env, i, nodes, rng)
         else
             a′ = sample(rng, Weights(σ, 1.0))
             env(get_legal_actions(env)[a′])
-            u = external_sampling(env, i, nodes, rng)
             sI .+= σ
-            u
+            external_sampling(env, i, nodes, rng)
         end
     end
 end
